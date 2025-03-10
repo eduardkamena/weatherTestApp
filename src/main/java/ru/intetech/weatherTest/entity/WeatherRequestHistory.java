@@ -6,13 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalTime;
 
 @Entity
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class WeatherRequestHistory {
 
