@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import ru.intetech.weatherTest.dto.Weather;
 import ru.intetech.weatherTest.entity.WeatherRequestHistory;
 import ru.intetech.weatherTest.repository.WeatherRequestRepository;

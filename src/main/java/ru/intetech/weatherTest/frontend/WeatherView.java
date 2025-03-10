@@ -7,7 +7,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import ru.intetech.weatherTest.dto.Weather;
 import ru.intetech.weatherTest.entity.WeatherRequestHistory;
 import ru.intetech.weatherTest.repository.WeatherRequestRepository;
