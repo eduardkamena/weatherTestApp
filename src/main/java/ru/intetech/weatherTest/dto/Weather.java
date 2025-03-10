@@ -2,10 +2,7 @@ package ru.intetech.weatherTest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -18,6 +15,7 @@ import java.util.List;
  * </p>
  */
 @Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @AllArgsConstructor
