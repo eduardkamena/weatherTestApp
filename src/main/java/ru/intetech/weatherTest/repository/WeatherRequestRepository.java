@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface WeatherRequestRepository extends JpaRepository<WeatherRequestHistory, Long> {
 
-    List<WeatherRequestHistory> findAllByOrderByRequestTimeDesc();
+    List<WeatherRequestHistory> findAllByOrderByIdDesc();
 }

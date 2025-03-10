@@ -47,7 +47,7 @@ public class WeatherView extends VerticalLayout {
         tableLayout.setAlignItems(Alignment.CENTER);
 
         // Первая строка: Ширина (широта) и Долгота
-        HorizontalLayout coordinatesLayout = new HorizontalLayout(longitudeField, latitudeField);
+        HorizontalLayout coordinatesLayout = new HorizontalLayout(latitudeField, longitudeField);
         coordinatesLayout.setWidthFull();
         coordinatesLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         coordinatesLayout.setSpacing(true);
@@ -137,8 +137,13 @@ public class WeatherView extends VerticalLayout {
 
     private void setWeatherImage(String weatherDescription) {
         String imageUrl;
+        // Обработка описания погоды с картинками
         if (weatherDescription.contains("небольшой снег")) {
             imageUrl = "https://avatars.mds.yandex.net/get-mpic/3916156/img_id6355055589781025494.jpeg/orig";
+        } else if (weatherDescription.contains("ясно")) {
+            imageUrl = "https://www.tokyo-city.ru/goods/ovsyanka_yasno_solnyschko_61f27d0c14298.jpg";
+        } else if (weatherDescription.contains("пасмурно") || weatherDescription.contains("небольшой дождь")) {
+            imageUrl = "https://chgtrk.ru/nimg/2021/11/02/AD622CD3-9A37-40C7-AD8C-255E12A5A0FA.jpg";
         } else {
             imageUrl = "https://a.d-cd.net/QMAAAgCBseA-960.jpg";
         }
@@ -148,10 +153,10 @@ public class WeatherView extends VerticalLayout {
 
     private void loadHistory() {
         historyLayout.removeAll();
-        List<WeatherRequestHistory> history = weatherRequestRepository.findAllByOrderByRequestTimeDesc();
+        List<WeatherRequestHistory> history = weatherRequestRepository.findAllByOrderByIdDesc();
         for (WeatherRequestHistory request : history) {
             Span historyEntry = new Span(String.format(
-                    "%s | широта: %.2f, долгота: %.2f | ответ: %s",
+                    "%s | ширина: %.2f, долгота: %.2f | ответ: %s",
                     request.getRequestTime(), request.getLatitude(), request.getLongitude(),
                     request.getDescription()
             ));

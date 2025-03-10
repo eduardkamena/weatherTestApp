@@ -3,10 +3,12 @@ package ru.intetech.weatherTest.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
 
+@Getter
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @AllArgsConstructor
@@ -18,11 +20,4 @@ public class Weather {
     @JsonProperty("main")
     private WeatherMain main;
 
-    public List<WeatherInfo> getInfo() {
-        return info;
-    }
-
-    public WeatherMain getMain() {
-        return main;
-    }
 }
