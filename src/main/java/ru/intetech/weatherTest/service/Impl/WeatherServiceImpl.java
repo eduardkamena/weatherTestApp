@@ -15,6 +15,11 @@ import ru.intetech.weatherTest.service.WeatherService;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Реализация интерфейса {@link WeatherService}.
+ * Предоставляет методы для получения данных о погоде с использованием внешнего API.
+ * Также сохраняет историю запросов погоды в базу данных.
+ */
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
@@ -27,11 +32,25 @@ public class WeatherServiceImpl implements WeatherService {
     private final RestTemplate restTemplate;
     private final WeatherRequestRepository weatherRequestRepository;
 
+    /**
+     * Конструктор класса WeatherServiceImpl.
+     *
+     * @param restTemplate             объект {@link RestTemplate} для выполнения HTTP-запросов
+     * @param weatherRequestRepository репозиторий для работы с историей запросов погоды
+     */
     public WeatherServiceImpl(RestTemplate restTemplate, WeatherRequestRepository weatherRequestRepository) {
         this.restTemplate = restTemplate;
         this.weatherRequestRepository = weatherRequestRepository;
     }
 
+    /**
+     * Получает информацию о погоде для указанных географических координат.
+     * Сохраняет запрос и результат в базу данных для истории.
+     *
+     * @param lat широта местоположения
+     * @param lon долгота местоположения
+     * @return объект {@link Weather}, содержащий информацию о погоде
+     */
     @Override
     public Weather getWeather(double lat, double lon) {
         Weather weather = restTemplate.exchange(

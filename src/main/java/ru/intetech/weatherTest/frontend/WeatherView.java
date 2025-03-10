@@ -17,6 +17,11 @@ import ru.intetech.weatherTest.service.WeatherService;
 
 import java.util.List;
 
+/**
+ * Класс WeatherView представляет собой веб-интерфейс для отображения информации о погоде.
+ * Пользователь может ввести координаты (широту и долготу) и получить текущую погоду для указанного местоположения.
+ * Также отображается история запросов погоды.
+ */
 @Route("")
 public class WeatherView extends VerticalLayout {
 
@@ -34,6 +39,12 @@ public class WeatherView extends VerticalLayout {
 
     private final Image weatherImage = new Image();
 
+    /**
+     * Конструктор класса WeatherView.
+     *
+     * @param weatherService           сервис для получения данных о погоде
+     * @param weatherRequestRepository репозиторий для работы с историей запросов погоды
+     */
     @Autowired
     public WeatherView(WeatherService weatherService, WeatherRequestRepository weatherRequestRepository) {
         this.weatherService = weatherService;
@@ -109,6 +120,10 @@ public class WeatherView extends VerticalLayout {
         loadHistory();
     }
 
+    /**
+     * Метод для отображения информации о погоде на основе введенных координат.
+     * Если координаты введены некорректно, отображается сообщение об ошибке.
+     */
     private void showWeather() {
         try {
             double lat = Double.parseDouble(latitudeField.getValue());
@@ -137,6 +152,11 @@ public class WeatherView extends VerticalLayout {
         }
     }
 
+    /**
+     * Метод для установки изображения погоды в зависимости от описания.
+     *
+     * @param weatherDescription описание погоды
+     */
     private void setWeatherImage(String weatherDescription) {
         String imageUrl;
         // Обработка описания погоды с картинками
@@ -153,6 +173,9 @@ public class WeatherView extends VerticalLayout {
         weatherImage.setWidth("320px");
     }
 
+    /**
+     * Метод для загрузки и отображения истории запросов погоды.
+     */
     private void loadHistory() {
         historyLayout.removeAll();
         List<WeatherRequestHistory> history = weatherRequestRepository.findAllByOrderByIdDesc();
