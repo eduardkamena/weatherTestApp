@@ -21,16 +21,16 @@ public class WeatherView extends VerticalLayout {
     private final WeatherService weatherService;
     private final WeatherRequestRepository weatherRequestRepository;
 
-    private final TextField latitudeField = new TextField("Широта");
+    private final TextField latitudeField = new TextField("Ширина");
     private final TextField longitudeField = new TextField("Долгота");
     private final Button weatherButton = new Button("Показать погоду!");
 
     private final Span descriptionSpan = new Span();
     private final Span tempSpan = new Span();
+    private final Span historyHeader = new Span("История");
     private final VerticalLayout historyLayout = new VerticalLayout();
 
     private final Image weatherImage = new Image();
-
 
     @Autowired
     public WeatherView(WeatherService weatherService, WeatherRequestRepository weatherRequestRepository) {
@@ -46,7 +46,7 @@ public class WeatherView extends VerticalLayout {
         tableLayout.setPadding(false);
         tableLayout.setAlignItems(Alignment.CENTER);
 
-        // Первая строка: Широта и Долгота
+        // Первая строка: Ширина (широта) и Долгота
         HorizontalLayout coordinatesLayout = new HorizontalLayout(longitudeField, latitudeField);
         coordinatesLayout.setWidthFull();
         coordinatesLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
@@ -72,11 +72,25 @@ public class WeatherView extends VerticalLayout {
         imageLayout.setWidthFull();
         imageLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
 
-        tableLayout.add(coordinatesLayout, buttonLayout, descriptionLayout, tempLayout, imageLayout);
-        add(tableLayout, historyLayout);
+        // Шестая строка: Заголовок истории
+        HorizontalLayout historyHeaderLayout = new HorizontalLayout(historyHeader);
+        historyHeaderLayout.setWidthFull();
+        historyHeaderLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
 
+        // Седьмая строка: История запросов
+        historyLayout.setWidthFull();
+        historyLayout.setDefaultHorizontalComponentAlignment(Alignment.START);
+        historyLayout.setSpacing(false);
+        historyLayout.setPadding(false);
+
+        // Добавляем строки в таблицу
+        tableLayout.add(coordinatesLayout, buttonLayout, descriptionLayout, tempLayout, imageLayout, historyHeaderLayout, historyLayout);
+        add(tableLayout);
+
+        // Обработка нажатия кнопки
         weatherButton.addClickListener(event -> showWeather());
 
+        // Настройка стилей
         descriptionSpan.getStyle()
                 .set("font-size", "32px")
                 .set("font-weight", "bold");
@@ -85,6 +99,11 @@ public class WeatherView extends VerticalLayout {
                 .set("font-size", "14px")
                 .set("font-weight", "bold");
 
+        historyHeader.getStyle()
+                .set("font-size", "20px")
+                .set("font-weight", "bold");
+
+        // Загружаем историю запросов
         loadHistory();
     }
 
@@ -102,6 +121,9 @@ public class WeatherView extends VerticalLayout {
             tempSpan.setText(String.format("%d градусов, ощущается как %d", temp, feelsLike));
             setWeatherImage(description);
 
+            // Обновляем историю запросов
+            loadHistory();
+
         } catch (NumberFormatException e) {
             descriptionSpan.setText("Ошибка: Введите числовые значения для координат");
             tempSpan.setText("");
@@ -115,7 +137,6 @@ public class WeatherView extends VerticalLayout {
 
     private void setWeatherImage(String weatherDescription) {
         String imageUrl;
-        // обработка вариантов погоды
         if (weatherDescription.contains("небольшой снег")) {
             imageUrl = "https://avatars.mds.yandex.net/get-mpic/3916156/img_id6355055589781025494.jpeg/orig";
         } else {
@@ -130,7 +151,7 @@ public class WeatherView extends VerticalLayout {
         List<WeatherRequestHistory> history = weatherRequestRepository.findAllByOrderByRequestTimeDesc();
         for (WeatherRequestHistory request : history) {
             Span historyEntry = new Span(String.format(
-                    "%s | ширина: %.2f, долгота: %.2f | ответ: %s",
+                    "%s | широта: %.2f, долгота: %.2f | ответ: %s",
                     request.getRequestTime(), request.getLatitude(), request.getLongitude(),
                     request.getDescription()
             ));
