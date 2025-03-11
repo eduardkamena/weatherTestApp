@@ -1,0 +1,32 @@
+version: '4.39'
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: weatherTest_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vaadinWeather
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    image: weather-test-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weatherTest_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/vaadinWeather
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
